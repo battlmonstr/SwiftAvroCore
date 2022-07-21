@@ -590,7 +590,7 @@ extension AvroSchema.FieldSchema {
             if let defaultValue = try? container.decodeIfPresent(String.self, forKey: .defaultValue) {
                 self.defaultValue = defaultValue
             }else {
-                throw AvroSchemaDecodingError.unknownSchemaJsonFormat
+                self.defaultValue = nil
             }
             if let optional = try? container.decodeIfPresent(Bool.self, forKey: .optional) {
                 self.optional = optional
