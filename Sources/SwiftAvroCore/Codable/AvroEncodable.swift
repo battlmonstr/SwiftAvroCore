@@ -52,11 +52,11 @@ public final class AvroEncoder {
 /*
  * Encoder for convert Avro types to binary format by checking the schema
  */
-fileprivate final class AvroBinaryEncoder: Encoder {
+public final class AvroBinaryEncoder: Encoder {
     public var codingPath: [CodingKey] = []
     
     public var userInfo: [CodingUserInfoKey : Any] = [CodingUserInfoKey : Any]()
-    var unkeyedContainerCache: AvroUnkeyedEncodingContainer? = nil
+    fileprivate var unkeyedContainerCache: AvroUnkeyedEncodingContainer? = nil
     public var encodeKey: Bool = false
     public func container<Key>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> {
         return KeyedEncodingContainer(AvroKeyedEncodingContainer<Key>(encoder: self, schema: schema))
@@ -115,7 +115,7 @@ fileprivate final class AvroBinaryEncoder: Encoder {
     
     var schema: AvroSchema
     
-    init(schema: AvroSchema) {
+    public init(schema: AvroSchema) {
         self.schema = schema
         self.primitive = AvroPrimitiveEncoder()
     }
@@ -129,7 +129,7 @@ fileprivate final class AvroBinaryEncoder: Encoder {
         self.schema = schema
         self.primitive = primitiveEncoder
     }
-    func getData() -> Data {
+    public func getData() -> Data {
         return Data(primitive.buffer)
     }
     func getSize() -> Int {
