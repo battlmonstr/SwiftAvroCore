@@ -170,10 +170,19 @@ fileprivate struct  AvroKeyedEncodingContainer<K: CodingKey>: KeyedEncodingConta
         return false
     }
     mutating func encodeNil(forKey key: K) throws {
-        guard self.schema(key).isNull() else {
+        switch schema(key) {
+        case .nullSchema:
+            encoder.primitive.encodeNull()
+        case .unionSchema(let union):
+            if let nullIndex = union.branches.firstIndex(where: { $0.isNull() }) {
+                encoder.primitive.encode(nullIndex)
+            } else {
+                throw BinaryEncodingError.typeMismatchWithSchemaNil
+            }
+            encoder.primitive.encodeNull()
+        default:
             throw BinaryEncodingError.typeMismatchWithSchemaNil
         }
-        encoder.primitive.encodeNull()
     }
     
     mutating func encode(_ value: Bool, forKey key: K) throws {
@@ -314,6 +323,201 @@ fileprivate struct  AvroKeyedEncodingContainer<K: CodingKey>: KeyedEncodingConta
         }
     }
    
+    mutating func encodeIfPresent<T>(_ valueOpt: T?, forKey key: K) throws where T : Encodable {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: String?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: Bool?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: Int?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: Int8?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: Int16?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: Int32?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: Int64?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: UInt?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: UInt8?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: UInt16?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: UInt32?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: UInt64?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: Float?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
+    mutating func encodeIfPresent(_ valueOpt: Double?, forKey key: K) throws {
+        switch schema(key) {
+        case .unionSchema:
+            if let value = valueOpt {
+                try self.encode(value, forKey: key)
+            } else {
+                try self.encodeNil(forKey: key)
+            }
+        default:
+            throw BinaryEncodingError.typeMismatchWithSchemaNil
+        }
+    }
+
     mutating func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type, forKey key: K) -> KeyedEncodingContainer<NestedKey> where NestedKey : CodingKey {
         return KeyedEncodingContainer(AvroKeyedEncodingContainer<NestedKey>(
             encoder: encoder, schema: schema(key)))

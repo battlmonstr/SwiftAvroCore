@@ -314,6 +314,39 @@ class AvroEnodableTest: XCTestCase {
             XCTAssert(false, "Failed. Nil value")
         }
     }
+
+    func testNullableStringInStruct() throws {
+        struct Model: Encodable {
+            let strOpt: String?
+        }
+
+        let jsonSchema = """
+        {
+            "type": "record",
+            "fields": [
+                {
+                    "name": "strOpt",
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            ]
+        }
+        """
+        let avro = Avro()
+        let schema = avro.decodeSchema(schema: jsonSchema)!
+        let encoder = AvroEncoder()
+
+        XCTAssertEqual(
+            try encoder.encode(Model(strOpt: nil), schema: schema),
+            Data([0x00]))
+
+        XCTAssertEqual(
+            try encoder.encode(Model(strOpt: "a"), schema: schema),
+            Data([0x02, 0x02, 0x61]))
+    }
+
     func testUnion() {
         let jsonSchema = "[\"null\",\"string\"]"
         let avro = Avro()
