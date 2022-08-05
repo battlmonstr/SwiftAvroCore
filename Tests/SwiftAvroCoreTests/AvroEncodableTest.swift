@@ -354,6 +354,7 @@ class AvroEnodableTest: XCTestCase {
         }
     }
     
+/*
     func testRequest() {
         struct arg {
             let model: HandshakeRequest
@@ -411,6 +412,7 @@ class AvroEnodableTest: XCTestCase {
            XCTAssertTrue(data == t.expected)
         }
     }
+*/
 
     func testNestedRecord() {
         struct Model: Codable {

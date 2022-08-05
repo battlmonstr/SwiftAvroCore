@@ -24,6 +24,7 @@ let package = Package(
             exclude: ["IPC"]),
         .testTarget(
             name: "SwiftAvroCoreTests",
-            dependencies: ["SwiftAvroCore"]),
+            dependencies: ["SwiftAvroCore"],
+            exclude: ["AvroProtocolTest.swift", "AvroRequestResponseTest.swift"]),
     ]
 )
